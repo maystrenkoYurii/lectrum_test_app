@@ -34,12 +34,17 @@ class Task extends Component {
         };
     }
 
-    shouldComponentUpdate (nextProps) {
+    shouldComponentUpdate (nextProps, nextState) {
         const { task } = this.props;
+        const { checkedEdit } = this.state;
 
-        if (task.id !== nextProps.id || task.message !== nextProps.message
-            || task.completed !== nextProps.completed || task.favorite !== nextProps.favorite
-            || task.created !== nextProps.created || task.modified !== nextProps.modified) {
+        if (task.get('id') !== nextProps.task.get('id')
+            || task.get('message') !== nextProps.task.get('message')
+            || task.get('completed') !== nextProps.task.get('completed')
+            || task.get('favorite') !== nextProps.task.get('favorite')
+            || task.get('created') !== nextProps.task.get('created')
+            || task.get('modified') !== nextProps.task.get('modified')
+            || checkedEdit !== nextState.checkedEdit) {
             return true;
         }
 
@@ -57,13 +62,13 @@ class Task extends Component {
     handleClickCheckBox = () => {
         const { changeTask, task } = this.props;
 
-        changeTask({ ...task, completed: !task.completed });
+        changeTask({ ...task, completed: !task.get('completed') });
     };
 
     handleClickStar = () => {
         const { changeTask, task } = this.props;
 
-        changeTask({ ...task, favorite: !task.favorite });
+        changeTask({ ...task, favorite: !task.get('favorite') });
     };
 
     handleClickEdit = () => {
@@ -89,21 +94,21 @@ class Task extends Component {
         const { checkedEdit } = this.state;
 
         const taskStyle = classNames(Styles.task, {
-            [Styles.completed]: task.completed,
+            [Styles.completed]: task.get('completed'),
         });
 
         return (
             <section className = { taskStyle }>
                 <div className = { Styles.content }>
                     <Checkbox
-                        checked = { task.completed }
+                        checked = { task.get('completed') }
                         className = { Styles.complete }
                         color1 = '#3b8ef3'
                         color2 = '#fff'
                         onClick = { this.handleClickCheckBox }
                     />
                     <input
-                        defaultValue = { task.message }
+                        defaultValue = { task.get('message') }
                         disabled = { !checkedEdit }
                         ref = { this.taskInput }
                         type = 'text'
@@ -112,7 +117,7 @@ class Task extends Component {
                 </div>
                 <div className = { Styles.actions }>
                     <Star
-                        checked = { task.favorite }
+                        checked = { task.get('favorite') }
                         className = { Styles.item }
                         color1 = '#3b8ef3'
                         onClick = { this.handleClickStar }
@@ -125,7 +130,7 @@ class Task extends Component {
                     />
                     <Remove
                         color1 = '#3b8ef3'
-                        onClick = { () => removeTask(task.id) }
+                        onClick = { () => removeTask(task.get('id')) }
                     />
                 </div>
             </section>

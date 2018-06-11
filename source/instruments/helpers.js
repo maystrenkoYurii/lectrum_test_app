@@ -3,11 +3,11 @@ export function getDisplayName (WrappedComponent) {
 }
 
 export function getFavorite (tasks) {
-    return [...tasks.filter((task) => task.favorite)];
+    return [...tasks.filter((task) => task.get('favorite'))];
 }
 
 export function getNotCompleted (tasks) {
-    return [...tasks.filter((task) => !task.completed)];
+    return [...tasks.filter((task) => !task.get('completed'))];
 }
 
 export function getAllTask (tasks, usedTask) {
@@ -27,9 +27,9 @@ export function sortTask (tasks) {
 }
 
 export function searchTask (tasks, search) {
-    return [...tasks.filter((task) => task.message.includes(search.toLocaleLowerCase() || search.toLocaleUpperCase()))];
+    return [...tasks.filter((task) => task.get('message').includes(search.toLocaleLowerCase() || search.toLocaleUpperCase()))];
 }
 
 export function getCheckedCompletedAll (tasks) {
-    return tasks.filter((task) => task.completed).length === tasks.length;
+    return tasks.filter((task) => task.get('completed')).length === tasks.length;
 }

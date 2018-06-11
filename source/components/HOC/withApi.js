@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 
 //api
-import { url, token } from "../../config/api";
+import { api, token } from "../../config/api";
 
 export const withApi = (Enchanced) =>
     class WithApi extends Component {
@@ -20,8 +20,8 @@ export const withApi = (Enchanced) =>
         }
 
         componentDidMount () {
-            this.setOldTask();
-            this.fetchTask();
+            //this.setOldTask();
+            //this.fetchTask();
         }
 
         setFetching = (state) => {
@@ -47,7 +47,7 @@ export const withApi = (Enchanced) =>
         async _fetchTask () {
             try {
                 this.setFetching(true);
-                const responce = await fetch(url, {
+                const responce = await fetch(api, {
                     method:  'GET',
                     headers: {
                         Authorization:  token,
@@ -78,7 +78,7 @@ export const withApi = (Enchanced) =>
         async _createTask (message) {
             try {
                 this.setFetching(true);
-                const responce = await fetch(url, {
+                const responce = await fetch(api, {
                     method:  'POST',
                     headers: {
                         Authorization:  token,
@@ -112,7 +112,7 @@ export const withApi = (Enchanced) =>
         async _changeTask (task) {
             try {
                 this.setFetching(true);
-                const responce = await fetch(url, {
+                const responce = await fetch(api, {
                     method:  'PUT',
                     headers: {
                         Authorization:  token,
@@ -145,7 +145,7 @@ export const withApi = (Enchanced) =>
         async _removeTask (id) {
             try {
                 this.setFetching(true);
-                const responce = await fetch(`${url}/${id}`, {
+                const responce = await fetch(`${api}/${id}`, {
                     method:  'DELETE',
                     headers: {
                         Authorization:  token,
@@ -173,14 +173,12 @@ export const withApi = (Enchanced) =>
         }
 
         render () {
-
             return (
                 <Enchanced
                     { ...this.state }
                     { ...this.props }
                     changeTask = { this.changeTask }
                     createTask = { this.createTask }
-                    removeTask = { this.removeTask }
                 />
             );
         }

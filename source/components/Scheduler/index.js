@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import FlipMove from 'react-flip-move';
 
 //Component
@@ -9,8 +11,10 @@ import Checkbox from '../../theme/assets/Checkbox';
 import Spinner from '../../components/Spinner';
 import Task from '../Task';
 
-//HOK
+//bus
 import { withApi } from '../../components/HOC/withApi';
+import { tasksActions } from '../../bus/tasks/actions';
+import { postsActionsAsync } from '../../bus/tasks/saga/asyncActions';
 
 //herpers
 import { sortTask, searchTask, getCheckedCompletedAll } from '../../instruments/helpers';
@@ -21,14 +25,43 @@ import Styles from './styles.m.css';
 
 const duration = 0.4;
 
+const mapStateToProps = (state) => {
+    return {
+        isFetching: state.ui.get('isFetching'),
+        tasks:      state.tasks,
+    };
+};
+
+const mapDispathToProps = (dispatch) => {
+    return {
+        actions: bindActionCreators(
+            {
+                ...tasksActions,
+                ...postsActionsAsync,
+            },
+            dispatch
+        ),
+    };
+};
+
+@connect(mapStateToProps, mapDispathToProps)
 export class Scheduler extends Component {
 
     static propTypes = {
+        actions:    PropTypes.object.isRequired,
         changeTask: PropTypes.func.isRequired,
         createTask: PropTypes.func.isRequired,
         fetching:   PropTypes.bool.isRequired,
-        removeTask: PropTypes.func.isRequired,
+        isFetching: PropTypes.bool.isRequired,
         tasks:      PropTypes.array.isRequired,
+    };
+
+    static defaultProps = {
+        isFetching: false,
+        actions:    {
+            fetchTasks:      () => {},
+            removeTaskAsync: () => {},
+        },
     };
 
     constructor (props) {
@@ -37,6 +70,10 @@ export class Scheduler extends Component {
             newTask: '',
             search:  '',
         };
+    }
+
+    componentDidMount () {
+        this.props.actions.fetchTasks();
     }
 
     shouldComponentUpdate (nextProps) {
@@ -93,7 +130,7 @@ export class Scheduler extends Component {
     };
 
     render () {
-        const { tasks, changeTask, removeTask, fetching } = this.props;
+        const { tasks, changeTask, actions, isFetching } = this.props;
         const { newTask, search } = this.state;
 
         const processedTask = sortTask(searchTask(tasks, search));
@@ -101,13 +138,13 @@ export class Scheduler extends Component {
 
         const renderTask = processedTask.map((task) => (
             <Transition
-                key = { task.id }
+                key = { task.get('id') }
                 timeout = { { enter: duration * 1000, exit: duration * 1000 } }
                 onEnter = { this.onEnterAnimation(task) }
                 onExit = { this.onExitAnimation }>
                 <Task
                     changeTask = { changeTask }
-                    removeTask = { removeTask }
+                    removeTask = { actions.removeTaskAsync }
                     task = { task }
                 />
             </Transition>
@@ -115,7 +152,7 @@ export class Scheduler extends Component {
 
         return (
             <section className = { Styles.scheduler }>
-                <Spinner spin = { fetching } />
+                <Spinner spin = { isFetching } />
                 <main>
                     <header>
                         <h1>
