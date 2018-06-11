@@ -11,8 +11,10 @@ import Checkbox from '../../theme/assets/Checkbox';
 import Spinner from '../../components/Spinner';
 import Task from '../Task';
 
-//bus
+//HOK
 import { withApi } from '../../components/HOC/withApi';
+
+//bus
 import { tasksActions } from '../../bus/tasks/actions';
 import { postsActionsAsync } from '../../bus/tasks/saga/asyncActions';
 
@@ -49,18 +51,18 @@ export class Scheduler extends Component {
 
     static propTypes = {
         actions:    PropTypes.object.isRequired,
-        changeTask: PropTypes.func.isRequired,
-        createTask: PropTypes.func.isRequired,
-        fetching:   PropTypes.bool.isRequired,
         isFetching: PropTypes.bool.isRequired,
         tasks:      PropTypes.array.isRequired,
     };
 
     static defaultProps = {
         isFetching: false,
+        tasks:      [],
         actions:    {
             fetchTasks:      () => {},
             removeTaskAsync: () => {},
+            createTaskAsync: () => {},
+            changeTaskAsync: () => {},
         },
     };
 
@@ -77,13 +79,13 @@ export class Scheduler extends Component {
     }
 
     shouldComponentUpdate (nextProps) {
-        const { fetching } = this.props;
+        const { isFetching } = this.props;
 
-        if (fetching === nextProps.fetching) {
+        /*if (isFetching === nextProps.isFetching) {
             return true;
-        }
+        }*/
 
-        return false;
+        return true;
     }
 
     changeNewTask = (event) => {
@@ -97,23 +99,23 @@ export class Scheduler extends Component {
     submitNewTask = (event) => {
         event.preventDefault();
         const { newTask } = this.state;
-        const { createTask } = this.props;
+        const { actions } = this.props;
 
         if (newTask && newTask.length <= 50) {
-            createTask(newTask);
+            actions.createTaskAsync(newTask);
             this.setState({ newTask: '' });
         }
     };
 
     handleClickCheckBox = (tasks, checkedCompletedAll) => {
-        const { changeTask } = this.props;
+        const { actions } = this.props;
 
         if (!checkedCompletedAll) {
             const changedTask = tasks.map((task) => {
                 return { ...task, completed: true };
             });
 
-            changeTask(changedTask);
+            actions.changeTaskAsync(changedTask);
         }
     };
 
@@ -130,7 +132,7 @@ export class Scheduler extends Component {
     };
 
     render () {
-        const { tasks, changeTask, actions, isFetching } = this.props;
+        const { tasks, actions, isFetching } = this.props;
         const { newTask, search } = this.state;
 
         const processedTask = sortTask(searchTask(tasks, search));
@@ -143,7 +145,7 @@ export class Scheduler extends Component {
                 onEnter = { this.onEnterAnimation(task) }
                 onExit = { this.onExitAnimation }>
                 <Task
-                    changeTask = { changeTask }
+                    changeTask = { actions.changeTaskAsync }
                     removeTask = { actions.removeTaskAsync }
                     task = { task }
                 />

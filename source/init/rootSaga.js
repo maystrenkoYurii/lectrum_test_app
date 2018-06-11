@@ -6,6 +6,7 @@ export function* rootSaga () {
     yield all([
         tasksWatchers.watchFetchTask(),
         tasksWatchers.watchCreateTask(),
-        tasksWatchers.watchRemoveTask()
+        tasksWatchers.watchRemoveTask(),
+        tasksWatchers.watchChangeTask()
     ]);
 }

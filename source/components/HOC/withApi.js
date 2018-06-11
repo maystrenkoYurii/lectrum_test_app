@@ -175,10 +175,8 @@ export const withApi = (Enchanced) =>
         render () {
             return (
                 <Enchanced
-                    { ...this.state }
                     { ...this.props }
-                    changeTask = { this.changeTask }
-                    createTask = { this.createTask }
+
                 />
             );
         }

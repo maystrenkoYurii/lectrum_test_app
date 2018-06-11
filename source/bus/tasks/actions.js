@@ -9,6 +9,10 @@ export const tasksActions = Object.freeze({
         type:    types.CREATE_TASK,
         payload: task,
     }),
+    changeTask: (task) => ({
+        type:    types.CHANGE_TASK,
+        payload: task,
+    }),
     fetchTasks: () => ({
         type: types.FETCH_TASKS,
     }),

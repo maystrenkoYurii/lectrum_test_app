@@ -12,6 +12,9 @@ export const tasksReducer = (state = initialState, action) => {
             return state.unshift(fromJS(action.payload));
         case types.REMOVE_TASK:
             return state.filter((task) => task.get('id') !== action.payload);
+        case types.CHANGE_TASK:
+            return state.map((taskOld) => action.payload[action.payload.map((taskNew) =>
+                taskNew.get('id')).indexOf(taskOld.get('id'))] || taskOld);
         default:
             return state;
     }
