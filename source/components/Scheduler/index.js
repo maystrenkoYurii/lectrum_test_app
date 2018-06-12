@@ -2,8 +2,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
 import FlipMove from 'react-flip-move';
 
 //Component
@@ -14,10 +12,6 @@ import Task from '../Task';
 //HOK
 import { withApi } from '../../components/HOC/withApi';
 
-//bus
-import { tasksActions } from '../../bus/tasks/actions';
-import { postsActionsAsync } from '../../bus/tasks/saga/asyncActions';
-
 //herpers
 import { sortTask, searchTask, getCheckedCompletedAll } from '../../instruments/helpers';
 import Animation from './animation';
@@ -27,43 +21,12 @@ import Styles from './styles.m.css';
 
 const duration = 0.4;
 
-const mapStateToProps = (state) => {
-    return {
-        isFetching: state.ui.get('isFetching'),
-        tasks:      state.tasks,
-    };
-};
-
-const mapDispathToProps = (dispatch) => {
-    return {
-        actions: bindActionCreators(
-            {
-                ...tasksActions,
-                ...postsActionsAsync,
-            },
-            dispatch
-        ),
-    };
-};
-
-@connect(mapStateToProps, mapDispathToProps)
 export class Scheduler extends Component {
 
     static propTypes = {
         actions:    PropTypes.object.isRequired,
         isFetching: PropTypes.bool.isRequired,
-        tasks:      PropTypes.array.isRequired,
-    };
-
-    static defaultProps = {
-        isFetching: false,
-        tasks:      [],
-        actions:    {
-            fetchTasks:      () => {},
-            removeTaskAsync: () => {},
-            createTaskAsync: () => {},
-            changeTaskAsync: () => {},
-        },
+        tasks:      PropTypes.object.isRequired,
     };
 
     constructor (props) {
@@ -74,16 +37,12 @@ export class Scheduler extends Component {
         };
     }
 
-    componentDidMount () {
-        this.props.actions.fetchTasks();
-    }
-
     shouldComponentUpdate (nextProps) {
         const { isFetching } = this.props;
 
-        /*if (isFetching === nextProps.isFetching) {
+        if (isFetching === nextProps.isFetching) {
             return true;
-        }*/
+        }
 
         return true;
     }
