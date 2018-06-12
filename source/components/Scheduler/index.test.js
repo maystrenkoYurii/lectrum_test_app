@@ -1,6 +1,8 @@
 import React from 'react';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import { fromJS } from 'immutable';
+
 import { Scheduler } from './';
 import tasksMook from '../../instruments/tasks.json';
 
@@ -8,11 +10,14 @@ configure({ adapter: new Adapter() });
 
 
 const props = {
-    changeTask: jest.fn(),
-    createTask: jest.fn(),
-    fetching:   false,
-    removeTask: jest.fn(),
-    tasks:      tasksMook,
+    actions: {
+        fetchTasks:      () => jest.fn(),
+        removeTaskAsync: () => jest.fn(),
+        createTaskAsync: () => jest.fn(),
+        changeTaskAsync: () => jest.fn(),
+    },
+    tasks:      fromJS(tasksMook),
+    isFetching: false,
 };
 
 const state = {
