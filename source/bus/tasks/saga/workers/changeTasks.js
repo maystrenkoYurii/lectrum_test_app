@@ -7,9 +7,11 @@ import { uiActions } from '../../../../bus/ui/actions';
 export function* callChangeTaskWorker ({ payload: task }) {
     try {
 
+        console.log('A', JSON.stringify(Array.isArray(task) ? task: [task]));
+
         yield put(uiActions.setFetchingState(true));
 
-        const response = yield call(fetch, api, {
+        const response = yield call(fetch, `${api}`, {
             method:  'PUT',
             headers: {
                 Authorization:  token,

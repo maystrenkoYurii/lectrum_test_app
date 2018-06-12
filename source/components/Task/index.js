@@ -61,14 +61,16 @@ class Task extends Component {
 
     handleClickCheckBox = () => {
         const { changeTask, task } = this.props;
+        const taskObject = task.removeAll(['completed']).toJS();
 
-        changeTask({ ...task, completed: !task.get('completed') });
+        changeTask({ ...taskObject, completed: !task.get('completed') });
     };
 
     handleClickStar = () => {
         const { changeTask, task } = this.props;
+        const taskObject = task.removeAll(['favorite']).toJS();
 
-        changeTask({ ...task, favorite: !task.get('favorite') });
+        changeTask({ ...taskObject, favorite: !task.get('favorite') });
     };
 
     handleClickEdit = () => {
