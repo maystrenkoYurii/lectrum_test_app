@@ -11,7 +11,7 @@ export function getNotCompleted (tasks) {
 }
 
 export function getAllTask (tasks, usedTask) {
-    return [...tasks.filter((task) => !usedTask.includes(task))];
+    return [...tasks.filter((task) => usedTask.includes(task) === false)];
 }
 
 export function sortTask (tasks) {
