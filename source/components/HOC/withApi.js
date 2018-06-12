@@ -52,25 +52,7 @@ export const withApi = (Enchanced) => {
             const { actions } = this.props;
 
             actions.fetchTasks();
-            //this.setOldTask();
         }
-
-        saveTaskLocal = (tasks) => {
-            localStorage.setItem('tasks', JSON.stringify(tasks));
-        };
-
-        getTaskLocal = () => {
-            return JSON.parse(localStorage.getItem('tasks'));
-        };
-
-        setOldTask = () => {
-            const tasksOld = this.getTaskLocal();
-
-            if (tasksOld) {
-                this.setState({ tasks: tasksOld });
-            }
-        };
-
 
         render () {
             return (
