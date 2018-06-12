@@ -81,11 +81,12 @@ class Task extends Component {
 
     handleChangeTextTask = (event) => {
         const { changeTask, task } = this.props;
+        const taskObject = task.removeAll(['message']).toJS();
 
         if (event.keyCode === 13) {
 
             this.handleClickEdit();
-            changeTask({ ...task, message: event.target.value });
+            changeTask({ ...taskObject, message: event.target.value });
         } else if (event.keyCode === 27) {
             this.handleClickEdit();
         }
