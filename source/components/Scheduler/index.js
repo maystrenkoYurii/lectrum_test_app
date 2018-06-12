@@ -112,7 +112,9 @@ export class Scheduler extends Component {
 
         if (!checkedCompletedAll) {
             const changedTask = tasks.map((task) => {
-                return { ...task, completed: true };
+                const taskObject = task.removeAll(['completed']).toJS();
+
+                return { ...taskObject, completed: true };
             });
 
             actions.changeTaskAsync(changedTask);
