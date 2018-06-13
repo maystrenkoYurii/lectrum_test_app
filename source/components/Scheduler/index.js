@@ -36,19 +36,18 @@ export class Scheduler extends Component {
         this.handleClickCheckBox = ::this._handleClickCheckBox;
     }
 
-    // shouldComponentUpdate (nextProps) {
-    //     const { isFetching, editTask, tasks } = this.props;
-    //
-    //     console.log('SS ' + );
-    //
-    //     if (isFetching !== nextProps.isFetching
-    //         || editTask.get('isEditTask') !== nextProps.editTask.get('isEditTask')
-    //         || !tasks.equals(nextProps.tasks)) {
-    //         return true;
-    //     }
-    //
-    //     return false;
-    // }
+    shouldComponentUpdate (nextProps) {
+        const { isFetching, editTask, tasks, search } = this.props;
+
+        if (isFetching !== nextProps.isFetching
+            || editTask.get('isEditTask') !== nextProps.editTask.get('isEditTask')
+            || !tasks.equals(nextProps.tasks)
+            || search.length !== nextProps.search.length) {
+            return true;
+        }
+
+        return false;
+    }
 
     _searchTask (event) {
         const { actions } = this.props;
