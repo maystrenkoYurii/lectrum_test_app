@@ -15,90 +15,86 @@ import Styles from './styles.m.css';
 class Task extends Component {
 
     static propTypes = {
-        changeTask: PropTypes.func,
-        removeTask: PropTypes.func,
-        task:       PropTypes.object,
+        actions:  PropTypes.object.isRequired,
+        editTask: PropTypes.object.isRequired,
+        task:     PropTypes.object,
     };
 
     static defaultProps = {
-        task:       {},
-        changeTask: null,
-        removeTask: null,
+        task: {},
     };
 
     constructor (props) {
         super(props);
         this.taskInput = React.createRef();
-        this.state = {
-            checkedEdit: false,
-        };
     }
 
-    shouldComponentUpdate (nextProps, nextState) {
-        const { task } = this.props;
-        const { checkedEdit } = this.state;
-
-        if (task.get('id') !== nextProps.task.get('id')
-            || task.get('message') !== nextProps.task.get('message')
-            || task.get('completed') !== nextProps.task.get('completed')
-            || task.get('favorite') !== nextProps.task.get('favorite')
-            || task.get('created') !== nextProps.task.get('created')
-            || task.get('modified') !== nextProps.task.get('modified')
-            || checkedEdit !== nextState.checkedEdit) {
-            return true;
-        }
-
-        return false;
-    }
+    // shouldComponentUpdate (nextProps) {
+    //     const { task, isEditTask } = this.props;
+    //
+    //     if (task.get('id') !== nextProps.task.get('id')
+    //         || task.get('message') !== nextProps.task.get('message')
+    //         || task.get('completed') !== nextProps.task.get('completed')
+    //         || task.get('favorite') !== nextProps.task.get('favorite')
+    //         || task.get('created') !== nextProps.task.get('created')
+    //         || task.get('modified') !== nextProps.task.get('modified')
+    //         || isEditTask !== nextProps.isEditTask) {
+    //         return true;
+    //     }
+    //
+    //     return false;
+    // }
 
     componentDidUpdate () {
-        const { checkedEdit } = this.state;
+        const { editTask } = this.props;
 
-        if (checkedEdit && this.taskInput.current) {
+        if (editTask.get('isEditTask') && this.taskInput.current) {
             this.taskInput.current.focus();
         }
     }
 
     handleClickCheckBox = () => {
-        const { changeTask, task } = this.props;
+        const { actions, task } = this.props;
         const taskObject = task.removeAll(['completed']).toJS();
 
-        changeTask({ ...taskObject, completed: !task.get('completed') });
+        actions.changeTaskAsync({ ...taskObject, completed: !task.get('completed') });
     };
 
     handleClickStar = () => {
-        const { changeTask, task } = this.props;
+        const { actions, task } = this.props;
         const taskObject = task.removeAll(['favorite']).toJS();
 
-        changeTask({ ...taskObject, favorite: !task.get('favorite') });
+        actions.changeTaskAsync({ ...taskObject, favorite: !task.get('favorite') });
     };
 
     handleClickEdit = () => {
-        this.setState(({ checkedEdit }) => ({
-            checkedEdit: !checkedEdit,
-        }));
+        const { actions, editTask, task } = this.props;
+        const id = task.get('id');
+
+        actions.setEditTaskState({ id, isEditTask: !editTask.get('isEditTask') });
     };
 
     handleChangeTextTask = (event) => {
-        const { changeTask, task } = this.props;
+        const { actions, task } = this.props;
         const taskObject = task.removeAll(['message']).toJS();
 
         if (event.keyCode === 13) {
 
             this.handleClickEdit();
-            changeTask({ ...taskObject, message: event.target.value });
+            actions.changeTaskAsync({ ...taskObject, message: event.target.value });
         } else if (event.keyCode === 27) {
             this.handleClickEdit();
         }
     };
 
     render () {
-        const { task, removeTask } = this.props;
-        const { checkedEdit } = this.state;
+        const { task, actions, editTask } = this.props;
 
         const taskStyle = classNames(Styles.task, {
             [Styles.completed]: task.get('completed'),
         });
+
+        const isEditTask = editTask.get('isEditTask') && editTask.get('id') === task.get('id');
 
         return (
             <section className = { taskStyle }>
@@ -112,7 +108,7 @@ class Task extends Component {
                     />
                     <input
                         defaultValue = { task.get('message') }
-                        disabled = { !checkedEdit }
+                        disabled = { !isEditTask }
                         ref = { this.taskInput }
                         type = 'text'
                         onKeyDown = { this.handleChangeTextTask }
@@ -126,14 +122,14 @@ class Task extends Component {
                         onClick = { this.handleClickStar }
                     />
                     <Edit
-                        checked = { checkedEdit }
+                        checked = { isEditTask }
                         className = { Styles.item }
                         color1 = '#3b8ef3'
                         onClick = { this.handleClickEdit }
                     />
                     <Remove
                         color1 = '#3b8ef3'
-                        onClick = { () => removeTask(task.get('id')) }
+                        onClick = { () => actions.removeTaskAsync(task.get('id')) }
                     />
                 </div>
             </section>

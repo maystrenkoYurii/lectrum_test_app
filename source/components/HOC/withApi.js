@@ -6,11 +6,13 @@ import { connect } from 'react-redux';
 
 //bus
 import { tasksActions } from '../../bus/tasks/actions';
+import { uiActions } from '../../bus/ui/actions';
 import { postsActionsAsync } from '../../bus/tasks/saga/asyncActions';
 
 export const withApi = (Enchanced) => {
     const mapStateToProps = (state) => {
         return {
+            editTask:   state.ui.get('editTask'),
             isFetching: state.ui.get('isFetching'),
             tasks:      state.tasks,
         };
@@ -20,6 +22,7 @@ export const withApi = (Enchanced) => {
         return {
             actions: bindActionCreators(
                 {
+                    ...uiActions,
                     ...tasksActions,
                     ...postsActionsAsync,
                 },
@@ -33,18 +36,21 @@ export const withApi = (Enchanced) => {
 
         static propTypes = {
             actions:    PropTypes.object.isRequired,
+            editTask:   PropTypes.object.isRequired,
             isFetching: PropTypes.bool.isRequired,
             tasks:      PropTypes.object.isRequired,
         };
 
         static defaultProps = {
             isFetching: false,
+            editTask:   {},
             tasks:      {},
             actions:    {
-                fetchTasks:      () => {},
-                removeTaskAsync: () => {},
-                createTaskAsync: () => {},
-                changeTaskAsync: () => {},
+                fetchTasks:       () => {},
+                removeTaskAsync:  () => {},
+                createTaskAsync:  () => {},
+                changeTaskAsync:  () => {},
+                setEditTaskState: () => {},
             },
         };
 

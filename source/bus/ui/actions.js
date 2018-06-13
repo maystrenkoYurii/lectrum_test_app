@@ -11,4 +11,8 @@ export const uiActions = Object.freeze({
         type:    types.SET_FETCHING_STATE,
         payload: state,
     }),
+    setEditTaskState: (state) => ({
+        type:    types.SET_EDIT_TASK_STATE,
+        payload: state,
+    }),
 });

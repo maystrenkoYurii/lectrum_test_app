@@ -25,6 +25,7 @@ export class Scheduler extends Component {
 
     static propTypes = {
         actions:    PropTypes.object.isRequired,
+        editTask:   PropTypes.object.isRequired,
         isFetching: PropTypes.bool.isRequired,
         tasks:      PropTypes.object.isRequired,
     };
@@ -37,15 +38,15 @@ export class Scheduler extends Component {
         };
     }
 
-    shouldComponentUpdate (nextProps) {
-        const { isFetching } = this.props;
-
-        if (isFetching === nextProps.isFetching) {
-            return true;
-        }
-
-        return true;
-    }
+    // shouldComponentUpdate (nextProps) {
+    //     const { isFetching, isEditTask } = this.props;
+    //
+    //     if (isFetching === nextProps.isFetching || isEditTask === nextProps.isEditTask) {
+    //         return false;
+    //     }
+    //
+    //     return true;
+    // }
 
     changeNewTask = (event) => {
         this.setState({ newTask: event.target.value });
@@ -93,7 +94,7 @@ export class Scheduler extends Component {
     };
 
     render () {
-        const { tasks, actions, isFetching } = this.props;
+        const { tasks, actions, isFetching, editTask } = this.props;
         const { newTask, search } = this.state;
 
         const processedTask = sortTask(searchTask(tasks, search));
@@ -106,8 +107,8 @@ export class Scheduler extends Component {
                 onEnter = { this.onEnterAnimation(task) }
                 onExit = { this.onExitAnimation }>
                 <Task
-                    changeTask = { actions.changeTaskAsync }
-                    removeTask = { actions.removeTaskAsync }
+                    actions = { actions }
+                    editTask = { editTask }
                     task = { task }
                 />
             </Transition>
