@@ -5,7 +5,9 @@ import {
     getFavorite,
     getNotCompleted,
     sortTask,
-    searchTask
+    searchTask,
+    getCheckedCompletedAll,
+    getAllTask
 } from './helpers';
 
 import tasksMook from './tasks.json';
@@ -125,5 +127,25 @@ describe('test searchTask function', () => {
 
     test('searchTask function should return object in array ', () => {
         expect(typeof searchTask(fromJS(tasksMook), 'nfg')[0]).toBe('object');
+    });
+});
+
+describe('test getCheckedCompletedAll function', () => {
+    test('getCheckedCompletedAll function should return is not array', () => {
+        expect(typeof getCheckedCompletedAll([])).toBe('boolean');
+    });
+
+    test('getCheckedCompletedAll function should return is not array', () => {
+        expect(getCheckedCompletedAll(searchTask(fromJS(tasksMook), ''))).toBe(false);
+    });
+
+    test('getCheckedCompletedAll function should return undefined', () => {
+        expect(getCheckedCompletedAll(searchTask(fromJS(tasksMook), ''))).not.toBeUndefined();
+    });
+});
+
+describe('test getAllTask function', () => {
+    test('getAllTask function should return is not array', () => {
+        expect(Array.isArray(getAllTask([], []))).toBe(true);
     });
 });

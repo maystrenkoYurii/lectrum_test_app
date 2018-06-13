@@ -31,5 +31,5 @@ export function searchTask (tasks, search) {
 }
 
 export function getCheckedCompletedAll (tasks) {
-    return tasks.filter((task) => task.get('completed')).length === tasks.length;
+    return tasks.filter((task) => task.get('completed') === true).length === tasks.length;
 }
