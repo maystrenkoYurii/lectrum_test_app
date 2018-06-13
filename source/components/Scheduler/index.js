@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
 import FlipMove from 'react-flip-move';
-import { Form, Errors, Control } from 'react-redux-form';
+import { Form } from 'react-redux-form';
 
 //Component
 import Checkbox from '../../theme/assets/Checkbox';
