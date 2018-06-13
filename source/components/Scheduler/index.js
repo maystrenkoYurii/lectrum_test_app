@@ -3,11 +3,13 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Transition } from 'react-transition-group';
 import FlipMove from 'react-flip-move';
+import { Form, Errors, Control } from 'react-redux-form';
 
 //Component
 import Checkbox from '../../theme/assets/Checkbox';
 import Spinner from '../../components/Spinner';
 import Task from '../Task';
+import Input from '../Input';
 
 //HOK
 import { withApi } from '../../components/HOC/withApi';
@@ -31,13 +33,6 @@ export class Scheduler extends Component {
         tasks:      PropTypes.object.isRequired,
     };
 
-    constructor (props) {
-        super(props);
-        this.state = {
-            newTask: '',
-        };
-    }
-
     // shouldComponentUpdate (nextProps) {
     //     const { isFetching, isEditTask } = this.props;
     //
@@ -48,24 +43,18 @@ export class Scheduler extends Component {
     //     return true;
     // }
 
-    changeNewTask = (event) => {
-        this.setState({ newTask: event.target.value });
-    };
-
     searchTask = (event) => {
         const { actions } = this.props;
 
         actions.setSearch(event.target.value);
     };
 
-    submitNewTask = (event) => {
-        event.preventDefault();
-        const { newTask } = this.state;
+    handleSubmitNewTask = (data) => {
         const { actions } = this.props;
 
-        if (newTask && newTask.length <= 50) {
-            actions.createTaskAsync(newTask);
-            this.setState({ newTask: '' });
+        if (data.newTask && data.newTask.length <= 50) {
+            actions.createTaskAsync(data.newTask);
+            actions.reset('forms.newTask');
         }
     };
 
@@ -97,7 +86,6 @@ export class Scheduler extends Component {
 
     render () {
         const { tasks, actions, isFetching, editTask, search } = this.props;
-        const { newTask } = this.state;
 
         const processedTask = sortTask(searchTask(tasks, search));
         const checkedCompletedAll = getCheckedCompletedAll(processedTask);
@@ -130,17 +118,18 @@ export class Scheduler extends Component {
                         />
                     </header>
                     <section>
-                        <form onSubmit = { this.submitNewTask } >
-                            <input
+                        <Form
+                            model = 'forms.newTask'
+                            onSubmit = { this.handleSubmitNewTask }>
+                            <Input
+                                id = 'forms.newTask.newTask'
+                                model = 'forms.newTask.newTask'
                                 placeholder = 'Новая задача'
-                                type = 'text'
-                                value = { newTask }
-                                onChange = { this.changeNewTask }
                             />
                             <button type = 'submit'>
                                 Добавить задачу
                             </button>
-                        </form>
+                        </Form>
                         <div className = { Styles.overlay }>
                             <ul>
                                 <FlipMove
