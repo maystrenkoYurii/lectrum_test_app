@@ -16,7 +16,7 @@ export const uiReducer = (state = initialState, action) => {
         case types.SET_FETCHING_STATE:
             return state.set('isFetching', action.payload);
         case types.SET_SEARCH:
-            return state.set('search', action.payload);
+            return state.set('searchTask', action.payload);
         case types.SET_EDIT_TASK_STATE:
             return state.set('editTask', fromJS(action.payload));
         default:
