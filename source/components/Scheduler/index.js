@@ -33,15 +33,16 @@ export class Scheduler extends Component {
         tasks:      PropTypes.object.isRequired,
     };
 
-    // shouldComponentUpdate (nextProps) {
-    //     const { isFetching, isEditTask } = this.props;
-    //
-    //     if (isFetching === nextProps.isFetching || isEditTask === nextProps.isEditTask) {
-    //         return false;
-    //     }
-    //
-    //     return true;
-    // }
+    shouldComponentUpdate (nextProps) {
+        const { isFetching, editTask } = this.props;
+
+        if (/*isFetching !== nextProps.isFetching
+            || */editTask.get('isEditTask') !== nextProps.editTask.get('isEditTask')) {
+            return true;
+        }
+
+        return false;
+    }
 
     searchTask = (event) => {
         const { actions } = this.props;
@@ -119,12 +120,15 @@ export class Scheduler extends Component {
                     </header>
                     <section>
                         <Form
+                            className = { Styles.form }
                             model = 'forms.newTask'
                             onSubmit = { this.handleSubmitNewTask }>
                             <Input
+                                className = { Styles.input }
                                 id = 'forms.newTask.newTask'
                                 model = 'forms.newTask.newTask'
                                 placeholder = 'Новая задача'
+                                type = 'text'
                             />
                             <button type = 'submit'>
                                 Добавить задачу

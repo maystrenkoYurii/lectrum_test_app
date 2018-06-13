@@ -29,21 +29,21 @@ class Task extends Component {
         this.taskInput = React.createRef();
     }
 
-    // shouldComponentUpdate (nextProps) {
-    //     const { task, isEditTask } = this.props;
-    //
-    //     if (task.get('id') !== nextProps.task.get('id')
-    //         || task.get('message') !== nextProps.task.get('message')
-    //         || task.get('completed') !== nextProps.task.get('completed')
-    //         || task.get('favorite') !== nextProps.task.get('favorite')
-    //         || task.get('created') !== nextProps.task.get('created')
-    //         || task.get('modified') !== nextProps.task.get('modified')
-    //         || isEditTask !== nextProps.isEditTask) {
-    //         return true;
-    //     }
-    //
-    //     return false;
-    // }
+    shouldComponentUpdate (nextProps) {
+        const { task, editTask } = this.props;
+
+        if (task.get('id') !== nextProps.task.get('id')
+            || task.get('message') !== nextProps.task.get('message')
+            || task.get('completed') !== nextProps.task.get('completed')
+            || task.get('favorite') !== nextProps.task.get('favorite')
+            || task.get('created') !== nextProps.task.get('created')
+            || task.get('modified') !== nextProps.task.get('modified')
+            || editTask.get('isEditTask') !== nextProps.editTask.get('isEditTask')) {
+            return true;
+        }
+
+        return false;
+    }
 
     componentDidUpdate () {
         const { editTask } = this.props;
