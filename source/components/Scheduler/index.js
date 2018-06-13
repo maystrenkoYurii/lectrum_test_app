@@ -27,6 +27,7 @@ export class Scheduler extends Component {
         actions:    PropTypes.object.isRequired,
         editTask:   PropTypes.object.isRequired,
         isFetching: PropTypes.bool.isRequired,
+        search:     PropTypes.string.isRequired,
         tasks:      PropTypes.object.isRequired,
     };
 
@@ -34,7 +35,6 @@ export class Scheduler extends Component {
         super(props);
         this.state = {
             newTask: '',
-            search:  '',
         };
     }
 
@@ -53,7 +53,9 @@ export class Scheduler extends Component {
     };
 
     searchTask = (event) => {
-        this.setState({ search: event.target.value });
+        const { actions } = this.props;
+
+        actions.setSearch(event.target.value);
     };
 
     submitNewTask = (event) => {
@@ -94,8 +96,8 @@ export class Scheduler extends Component {
     };
 
     render () {
-        const { tasks, actions, isFetching, editTask } = this.props;
-        const { newTask, search } = this.state;
+        const { tasks, actions, isFetching, editTask, search } = this.props;
+        const { newTask } = this.state;
 
         const processedTask = sortTask(searchTask(tasks, search));
         const checkedCompletedAll = getCheckedCompletedAll(processedTask);

@@ -15,4 +15,8 @@ export const uiActions = Object.freeze({
         type:    types.SET_EDIT_TASK_STATE,
         payload: state,
     }),
+    setSearch: (state) => ({
+        type:    types.SET_SEARCH,
+        payload: state,
+    }),
 });

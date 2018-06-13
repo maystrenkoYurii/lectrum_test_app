@@ -13,6 +13,7 @@ export const withApi = (Enchanced) => {
     const mapStateToProps = (state) => {
         return {
             editTask:   state.ui.get('editTask'),
+            search:     state.ui.get('search'),
             isFetching: state.ui.get('isFetching'),
             tasks:      state.tasks,
         };
@@ -38,11 +39,13 @@ export const withApi = (Enchanced) => {
             actions:    PropTypes.object.isRequired,
             editTask:   PropTypes.object.isRequired,
             isFetching: PropTypes.bool.isRequired,
+            search:     PropTypes.string.isRequired,
             tasks:      PropTypes.object.isRequired,
         };
 
         static defaultProps = {
             isFetching: false,
+            search:     '',
             editTask:   {},
             tasks:      {},
             actions:    {
@@ -51,6 +54,7 @@ export const withApi = (Enchanced) => {
                 createTaskAsync:  () => {},
                 changeTaskAsync:  () => {},
                 setEditTaskState: () => {},
+                setSearch:        () => {},
             },
         };
 
