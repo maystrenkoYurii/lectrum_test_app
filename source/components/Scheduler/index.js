@@ -1,7 +1,6 @@
 // Core
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Transition } from 'react-transition-group';
 import FlipMove from 'react-flip-move';
 import { Form } from 'react-redux-form';
 
@@ -16,12 +15,9 @@ import { withApi } from '../../components/HOC/withApi';
 
 //herpers
 import { sortTask, searchTask, getCheckedCompletedAll } from '../../instruments/helpers';
-import Animation from './animation';
 
 //Style
 import Styles from './styles.m.css';
-
-const duration = 0.4;
 
 export class Scheduler extends Component {
 
@@ -33,34 +29,43 @@ export class Scheduler extends Component {
         tasks:      PropTypes.object.isRequired,
     };
 
-    shouldComponentUpdate (nextProps) {
-        const { isFetching, editTask, tasks } = this.props;
-
-        if (isFetching !== nextProps.isFetching
-            || editTask.get('isEditTask') !== nextProps.editTask.get('isEditTask')
-            || !tasks.equals(nextProps.tasks)) {
-            return true;
-        }
-
-        return false;
+    constructor () {
+        super();
+        this.searchTask = ::this._searchTask;
+        this.handleSubmitNewTask = ::this._handleSubmitNewTask;
+        this.handleClickCheckBox = ::this._handleClickCheckBox;
     }
 
-    searchTask = (event) => {
+    // shouldComponentUpdate (nextProps) {
+    //     const { isFetching, editTask, tasks } = this.props;
+    //
+    //     console.log('SS ' + );
+    //
+    //     if (isFetching !== nextProps.isFetching
+    //         || editTask.get('isEditTask') !== nextProps.editTask.get('isEditTask')
+    //         || !tasks.equals(nextProps.tasks)) {
+    //         return true;
+    //     }
+    //
+    //     return false;
+    // }
+
+    _searchTask (event) {
         const { actions } = this.props;
 
         actions.setSearch(event.target.value);
-    };
+    }
 
-    handleSubmitNewTask = (data) => {
+    _handleSubmitNewTask (data) {
         const { actions } = this.props;
 
         if (data.newTask && data.newTask.length <= 50) {
             actions.createTaskAsync(data.newTask);
             actions.reset('forms.newTask');
         }
-    };
+    }
 
-    handleClickCheckBox = (tasks, checkedCompletedAll) => {
+    _handleClickCheckBox (tasks, checkedCompletedAll) {
         const { actions } = this.props;
 
         if (!checkedCompletedAll) {
@@ -72,19 +77,7 @@ export class Scheduler extends Component {
 
             actions.changeTaskAsync(changedTask);
         }
-    };
-
-    onEnterAnimation = (task) => (element) => {
-        if (task.added) {
-            Animation.open(element, duration);
-        } else {
-            Animation.show(element, duration);
-        }
-    };
-
-    onExitAnimation = (element) => {
-        Animation.close(element, duration);
-    };
+    }
 
     render () {
         const { tasks, actions, isFetching, editTask, search } = this.props;
@@ -93,17 +86,12 @@ export class Scheduler extends Component {
         const checkedCompletedAll = getCheckedCompletedAll(processedTask);
 
         const renderTask = processedTask.map((task) => (
-            <Transition
+            <Task
+                actions = { actions }
+                editTask = { editTask }
                 key = { task.get('id') }
-                timeout = { { enter: duration * 1000, exit: duration * 1000 } }
-                onEnter = { this.onEnterAnimation(task) }
-                onExit = { this.onExitAnimation }>
-                <Task
-                    actions = { actions }
-                    editTask = { editTask }
-                    task = { task }
-                />
-            </Transition>
+                task = { task }
+            />
         ));
 
         return (
@@ -138,7 +126,7 @@ export class Scheduler extends Component {
                         <div className = { Styles.overlay }>
                             <ul>
                                 <FlipMove
-                                    duration = { duration * 1000 }
+                                    duration = { 400 }
                                     easing = 'ease-out'>
                                     { renderTask }
                                 </FlipMove>

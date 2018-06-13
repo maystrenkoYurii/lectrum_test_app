@@ -27,6 +27,10 @@ class Task extends Component {
     constructor (props) {
         super(props);
         this.taskInput = React.createRef();
+        this.handleClickCheckBox = ::this._handleClickCheckBox;
+        this.handleClickStar = ::this._handleClickStar;
+        this.handleClickEdit = ::this._handleClickEdit;
+        this.handleChangeTextTask = ::this._handleChangeTextTask;
     }
 
     shouldComponentUpdate (nextProps) {
@@ -53,28 +57,28 @@ class Task extends Component {
         }
     }
 
-    handleClickCheckBox = () => {
+    _handleClickCheckBox () {
         const { actions, task } = this.props;
         const taskObject = task.removeAll(['completed']).toJS();
 
         actions.changeTaskAsync({ ...taskObject, completed: !task.get('completed') });
-    };
+    }
 
-    handleClickStar = () => {
+    _handleClickStar () {
         const { actions, task } = this.props;
         const taskObject = task.removeAll(['favorite']).toJS();
 
         actions.changeTaskAsync({ ...taskObject, favorite: !task.get('favorite') });
-    };
+    }
 
-    handleClickEdit = () => {
+    _handleClickEdit () {
         const { actions, editTask, task } = this.props;
         const id = task.get('id');
 
         actions.setEditTaskState({ id, isEditTask: !editTask.get('isEditTask') });
-    };
+    }
 
-    handleChangeTextTask = (event) => {
+    _handleChangeTextTask (event) {
         const { actions, task } = this.props;
         const taskObject = task.removeAll(['message']).toJS();
 
@@ -85,7 +89,7 @@ class Task extends Component {
         } else if (event.keyCode === 27) {
             this.handleClickEdit();
         }
-    };
+    }
 
     render () {
         const { task, actions, editTask } = this.props;
