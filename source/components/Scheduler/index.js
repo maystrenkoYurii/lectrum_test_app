@@ -34,10 +34,11 @@ export class Scheduler extends Component {
     };
 
     shouldComponentUpdate (nextProps) {
-        const { isFetching, editTask } = this.props;
+        const { isFetching, editTask, tasks } = this.props;
 
-        if (/*isFetching !== nextProps.isFetching
-            || */editTask.get('isEditTask') !== nextProps.editTask.get('isEditTask')) {
+        if (isFetching !== nextProps.isFetching
+            || editTask.get('isEditTask') !== nextProps.editTask.get('isEditTask')
+            || !tasks.equals(nextProps.tasks)) {
             return true;
         }
 
