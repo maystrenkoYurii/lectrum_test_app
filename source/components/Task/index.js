@@ -31,7 +31,7 @@ class Task extends Component {
         this.handleClickStar = ::this._handleClickStar;
         this.handleClickEdit = ::this._handleClickEdit;
         this.handleChangeTextTask = ::this._handleChangeTextTask;
-        this.handleInputDefault = ::this._handleInputDefault;
+        this.handleInputOnBlur = ::this._handleInputOnBlur;
     }
 
     shouldComponentUpdate (nextProps) {
@@ -92,7 +92,7 @@ class Task extends Component {
         }
     }
 
-    _handleInputDefault (input) {
+    _handleInputOnBlur (input) {
         const { task } = this.props;
 
         input.target.value = task.get('message');
@@ -122,7 +122,7 @@ class Task extends Component {
                         disabled = { !isEditTask }
                         ref = { this.taskInput }
                         type = 'text'
-                        onBlur = { this.handleInputDefault }
+                        onBlur = { this.handleInputOnBlur }
                         onKeyDown = { this.handleChangeTextTask }
                     />
                 </div>
