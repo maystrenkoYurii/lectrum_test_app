@@ -27,7 +27,7 @@ describe('fetch saga', () => {
         expect(clone.next().done).toBe(true);
     });
 
-    test('should complate successfully', () => {
+    test('should complete successfully', () => {
 
         expect(saga.next(__.fetchResponseSuccess).value).toMatchSnapshot();
 

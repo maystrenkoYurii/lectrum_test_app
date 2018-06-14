@@ -60,7 +60,6 @@ export class Scheduler extends Component {
 
         if (data.newTask && data.newTask.length <= 50) {
             actions.createTaskAsync(data.newTask);
-            actions.reset('forms.newTask');
         }
     }
 

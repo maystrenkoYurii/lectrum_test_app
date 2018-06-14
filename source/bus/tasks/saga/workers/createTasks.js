@@ -1,8 +1,10 @@
 import { call, put } from 'redux-saga/effects';
+import { actions as formActions } from 'react-redux-form';
 
 import { api, token } from '../../../../config/api';
 import { tasksActions } from '../../../../bus/tasks/actions';
 import { uiActions } from '../../../../bus/ui/actions';
+
 
 export function* callCreateTaskWorker ({ payload: message }) {
     try {
@@ -24,6 +26,7 @@ export function* callCreateTaskWorker ({ payload: message }) {
         }
 
         yield put(tasksActions.createTask(task));
+        yield put(formActions.reset('forms.newTask'));
     } catch (error) {
         yield put(uiActions.emitError(error, 'callCreateTaskWorker'));
     } finally {

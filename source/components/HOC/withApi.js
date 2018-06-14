@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { actions as formActions } from 'react-redux-form';
 
 //bus
 import { tasksActions } from '../../bus/tasks/actions';
@@ -24,7 +23,6 @@ export const withApi = (Enchanced) => {
         return {
             actions: bindActionCreators(
                 {
-                    ...formActions,
                     ...uiActions,
                     ...tasksActions,
                     ...postsActionsAsync,
@@ -57,7 +55,6 @@ export const withApi = (Enchanced) => {
                 changeTaskAsync:  () => {},
                 setEditTaskState: () => {},
                 setSearch:        () => {},
-                reset:            () => {},
             },
         };
 
