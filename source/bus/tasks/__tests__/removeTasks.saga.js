@@ -4,27 +4,26 @@ import { cloneableGenerator } from 'redux-saga/utils';
 import { api, token } from '../../../config/api';
 import { uiActions } from '../../ui/actions';
 import { tasksActions } from '../../tasks/actions';
-import { callChangeTaskWorker } from "../saga/workers/changeTasks";
+import { callRemoveTaskWorker } from "../saga/workers/removeTasks";
 
-const message = __.credentials;
+const id = __.credentials.id;
 
-const action = tasksActions.changeTask(message);
+const action = tasksActions.removeTask(id);
 
-const saga = cloneableGenerator(callChangeTaskWorker)(action);
+const saga = cloneableGenerator(callRemoveTaskWorker)(action);
 
-describe('changeTasks', () => {
+describe('removeTasks', () => {
     test('should dispatch SET_FETCHING_STATE action', () => {
         expect(saga.next().value).toEqual(put(uiActions.setFetchingState(true)));
     });
 
-    test('should dispatch CHANGE_TASK action', () => {
-        expect(saga.next().value).toEqual(call(fetch, api, {
-            method:  'PUT',
+    test('should dispatch REMOVE_TASK action', () => {
+        expect(saga.next().value).toEqual(call(fetch, `${api}/${id}`, {
+            method:  'DELETE',
             headers: {
                 Authorization:  token,
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify([__.credentials]),
         }));
     });
 
@@ -37,7 +36,7 @@ describe('changeTasks', () => {
         );
 
         expect(clone.next(__.responseDataFail).value).toEqual(
-            put(uiActions.emitError(__.error, 'callChangeTaskWorker')),
+            put(uiActions.emitError(__.error, 'callRemoveTaskWorker')),
         );
 
         expect(clone.next().value).toEqual(

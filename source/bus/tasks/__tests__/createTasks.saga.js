@@ -14,11 +14,11 @@ const action = tasksActions.createTask(message);
 const saga = cloneableGenerator(callCreateTaskWorker)(action);
 
 describe('createTasks', () => {
-    test('should dispatch SET_FETCHING action', () => {
+    test('should dispatch SET_FETCHING_STATE action', () => {
         expect(saga.next().value).toEqual(put(uiActions.setFetchingState(true)));
     });
 
-    test('should dispatch SET_FETCHING action', () => {
+    test('should dispatch CREATE_TASK action', () => {
         expect(saga.next().value).toEqual(call(fetch, api, {
             method:  'POST',
             headers: {

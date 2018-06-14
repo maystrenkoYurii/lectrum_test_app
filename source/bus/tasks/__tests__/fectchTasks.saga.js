@@ -11,11 +11,11 @@ const action = tasksActions.fetchTasks();
 const saga = cloneableGenerator(callFetchTasksWorker)(action);
 
 describe('fetchTasks', () => {
-    test('should dispatch SET_FETCHING action', () => {
+    test('should dispatch SET_FETCHING_STATE action', () => {
         expect(saga.next().value).toEqual(put(uiActions.setFetchingState(true)));
     });
 
-    test('should dispatch SET_FETCHING action', () => {
+    test('should dispatch FETCH_TASKS action', () => {
         expect(saga.next().value).toEqual(call(fetch, api, {
             method:  'GET',
             headers: {
