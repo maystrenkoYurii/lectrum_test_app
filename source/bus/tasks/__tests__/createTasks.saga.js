@@ -13,7 +13,7 @@ const action = tasksActions.createTask(message);
 
 const saga = cloneableGenerator(callCreateTaskWorker)(action);
 
-describe('fetchTasks', () => {
+describe('createTasks', () => {
     test('should dispatch SET_FETCHING action', () => {
         expect(saga.next().value).toEqual(put(uiActions.setFetchingState(true)));
     });
@@ -60,10 +60,6 @@ describe('fetchTasks', () => {
 
     test('should call react-redux-form RESET', () => {
         expect(saga.next().value).toEqual(put(actionsForm.reset('forms.newTask')));
-    });
-
-    test('dispatch CREATE_TASK', () => {
-        expect(saga.next().value).toEqual(put(tasksActions.createTask(__.credentials)));
     });
 
     test('should call SET_FETCHING_STATE', () => {
