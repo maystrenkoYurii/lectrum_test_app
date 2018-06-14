@@ -33,7 +33,7 @@ export class Scheduler extends Component {
         super();
         this.searchTask = ::this._searchTask;
         this.handleSubmitNewTask = ::this._handleSubmitNewTask;
-        this.handleClickCheckBox = ::this._handleClickCheckBox;
+        this.handleClickCompletedAll = ::this._handleClickCompletedAll;
     }
 
     shouldComponentUpdate (nextProps) {
@@ -63,7 +63,7 @@ export class Scheduler extends Component {
         }
     }
 
-    _handleClickCheckBox (tasks, checkedCompletedAll) {
+    _handleClickCompletedAll (tasks, checkedCompletedAll) {
         const { actions } = this.props;
 
         if (!checkedCompletedAll) {
@@ -82,6 +82,8 @@ export class Scheduler extends Component {
 
         const processedTask = sortTask(searchTask(tasks, search));
         const checkedCompletedAll = getCheckedCompletedAll(processedTask);
+
+        const handleClickCompletedAll = () => this.handleClickCompletedAll(processedTask, checkedCompletedAll);
 
         const renderTask = processedTask.map((task) => (
             <Task
@@ -137,7 +139,7 @@ export class Scheduler extends Component {
                                 checked = { checkedCompletedAll }
                                 color1 = '#000'
                                 color2 = '#fff'
-                                onClick = { () => this.handleClickCheckBox(processedTask, checkedCompletedAll) }
+                                onClick = { handleClickCompletedAll }
                             />
                         </div>
                         <span className = { Styles.completeAllTasks }>
