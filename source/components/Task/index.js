@@ -115,6 +115,7 @@ class Task extends Component {
                         disabled = { !isEditTask }
                         ref = { this.taskInput }
                         type = 'text'
+                        onBlur = { (input) => input.target.value = task.get('message') }
                         onKeyDown = { this.handleChangeTextTask }
                     />
                 </div>
