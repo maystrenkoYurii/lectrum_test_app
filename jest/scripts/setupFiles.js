@@ -16,6 +16,8 @@ const error = new Error(errorMessage);
 
 const tasksMook = tasks;
 
+const credentials = tasksMook[0];
+
 const responseDataSuccess = {
     data:    tasksMook,
     message: successMesasge,
@@ -46,4 +48,5 @@ global.__ = {
     responseDataFail,
     fetchResponseSuccess,
     fetchResponseFail,
+    credentials,
 };
