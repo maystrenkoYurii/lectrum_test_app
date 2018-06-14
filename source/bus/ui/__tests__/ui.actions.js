@@ -2,7 +2,7 @@ import { uiActions } from "../actions";
 import { types } from "../types";
 
 
-describe('tasks actions', () => {
+describe('ui actions', () => {
     test('EMIT_ERROR', () => {
         expect(uiActions.emitError({}, {})).toEqual({
             type:    types.EMIT_ERROR,
