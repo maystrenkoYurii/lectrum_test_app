@@ -3,11 +3,13 @@ import { cloneableGenerator } from 'redux-saga/utils';
 import { tasksActions } from '../../../bus/tasks/actions';
 import { callFetchTasksWorker } from '../saga/workers/fetchTasks';
 
-const fetchAction = tasksActions.fetchTasks();
-const saga = cloneableGenerator(callFetchTasksWorker)(fetchAction);
+import tasksMook from '../../../instruments/tasks.json';
 
-describe('fetch saga', () => {
-    test('should yield fetch', () => {
+const action = tasksActions.changeTask(tasksMook[0]);
+const saga = cloneableGenerator(callFetchTasksWorker)(action);
+
+describe('createTasks saga', () => {
+    test('should yield fetchTasks', () => {
         expect(saga.next().value).toMatchSnapshot();
     });
 
