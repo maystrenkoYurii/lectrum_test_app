@@ -1,7 +1,7 @@
 import { fetch } from './mocks/fetch';
 import { LocalStorage } from './mocks/localStorage';
 
-import tasksMook from '../../source/instruments/tasks.json';
+import tasks from './mocks/tasks.json';
 
 global.localStorage = new LocalStorage();
 
@@ -13,6 +13,8 @@ const successMesasge = 'TEST_SUCCESS_MESSAGE.';
 const errorMessage = 'TEST_ERROR_MESSAGE.';
 const token = 'TEST_TOKEN';
 const error = new Error(errorMessage);
+
+const tasksMook = tasks;
 
 const responseDataSuccess = {
     data:    tasksMook,
@@ -36,6 +38,7 @@ const fetchResponseFail = {
 };
 
 global.__ = {
+    tasksMook,
     errorMessage,
     token,
     error,

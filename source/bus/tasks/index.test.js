@@ -7,7 +7,7 @@ import {
     changeTask
 } from './helpers';
 
-import tasksMook from '../../instruments/tasks.json';
+import tasksMook from '../../../jest/scripts/mocks/tasks.json';
 
 describe('test fetchTask function', () => {
     test('fetchTask function should return is not array', () => {

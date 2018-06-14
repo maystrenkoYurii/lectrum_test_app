@@ -3,7 +3,7 @@ import { cloneableGenerator } from 'redux-saga/utils';
 import { tasksActions } from '../../../bus/tasks/actions';
 import { callFetchTasksWorker } from '../saga/workers/fetchTasks';
 
-import tasksMook from '../../../instruments/tasks.json';
+import tasksMook from '../../../../jest/scripts/mocks/tasks.json';
 
 const action = tasksActions.changeTask(tasksMook[0]);
 const saga = cloneableGenerator(callFetchTasksWorker)(action);

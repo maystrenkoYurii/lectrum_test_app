@@ -3,7 +3,7 @@ import { fromJS, List } from 'immutable';
 import { tasksReducer } from "../reducers";
 import { tasksActions } from "../actions";
 
-import tasksMook from '../../../instruments/tasks.json';
+import tasksMook from '../../../../jest/scripts/mocks/tasks.json';
 import { fetchTask, removeTask, createTask, changeTask } from '../helpers';
 
 const initialState = fromJS(JSON.parse(localStorage.getItem('tasks'))) || List();

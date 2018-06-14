@@ -10,7 +10,7 @@ import {
     getAllTask
 } from './helpers';
 
-import tasksMook from './tasks.json';
+import tasksMook from '../../jest/scripts/mocks/tasks.json';
 
 describe('test getDisplayName function', () => {
     test('getDisplayName function should return is not string', () => {

@@ -4,7 +4,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import { Map, fromJS } from 'immutable';
 
 import { Scheduler } from './';
-import tasksMook from '../../instruments/tasks.json';
+import tasksMook from '../../../jest/scripts/mocks/tasks.json';
 
 configure({ adapter: new Adapter() });
 

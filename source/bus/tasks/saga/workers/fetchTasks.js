@@ -15,6 +15,7 @@ export function* callFetchTasksWorker () {
                 'Content-Type': 'application/json',
             },
         });
+
         const { data: tasks, message } = yield call([response, response.json]);
 
         if (response.status !== 200) {
