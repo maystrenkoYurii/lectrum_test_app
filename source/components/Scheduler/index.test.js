@@ -1,23 +1,28 @@
 import React from 'react';
 import { configure, shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import { Map, fromJS } from 'immutable';
+
 import { Scheduler } from './';
-import tasksMook from '../../instruments/tasks.json';
+import tasksMook from '../../../jest/scripts/mocks/tasks.json';
 
 configure({ adapter: new Adapter() });
 
 
 const props = {
-    changeTask: jest.fn(),
-    createTask: jest.fn(),
-    fetching:   false,
-    removeTask: jest.fn(),
-    tasks:      tasksMook,
-};
-
-const state = {
-    newTask: '',
-    search:  '',
+    actions: {
+        fetchTasks:      () => jest.fn(),
+        removeTaskAsync: () => jest.fn(),
+        createTaskAsync: () => jest.fn(),
+        changeTaskAsync: () => jest.fn(),
+    },
+    editTask: Map({
+        id:         false,
+        isEditTask: false,
+    }),
+    tasks:      fromJS(tasksMook),
+    search:     '',
+    isFetching: false,
 };
 
 const result = shallow(<Scheduler { ...props } />);
@@ -49,12 +54,16 @@ describe('Scheduler component', () => {
         expect(result.find('h1')).toHaveLength(1);
     });
 
-    test('Should have 2 input element', () => {
-        expect(result.find('input')).toHaveLength(2);
+    test('Should have 1 input element', () => {
+        expect(result.find('input')).toHaveLength(1);
     });
 
-    test('Should have 1 form element', () => {
-        expect(result.find('form')).toHaveLength(1);
+    test('Should have 1 Input element', () => {
+        expect(result.find('Input')).toHaveLength(1);
+    });
+
+    test('Should have 1 Form element', () => {
+        expect(result.find('Connect(Form)')).toHaveLength(1);
     });
 
     test('Should have 1 button element', () => {
@@ -79,21 +88,5 @@ describe('Scheduler component', () => {
 
     test('Should have 1 span element', () => {
         expect(result.find('span')).toHaveLength(1);
-    });
-
-    test('Should input change value', () => {
-        expect(result.find('form').find('input').props().value).toBe(state.newTask);
-
-        result.setState(() => ({
-            newTask: 'FFF',
-        }));
-
-        expect(result.find('form').find('input').props().value).toBe('FFF');
-
-        result.setState(() => ({
-            newTask: '',
-        }));
-
-        expect(result.find('form').find('input').props().value).toBe(state.newTask);
     });
 });

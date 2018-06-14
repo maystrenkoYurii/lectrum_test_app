@@ -1,14 +1,16 @@
+import { fromJS } from 'immutable';
+
 import {
     getDisplayName,
     getFavorite,
     getNotCompleted,
-    getAllTask,
     sortTask,
     searchTask,
-    getCheckedCompletedAll
+    getCheckedCompletedAll,
+    getAllTask
 } from './helpers';
 
-import tasksMook from './tasks.json';
+import tasksMook from '../../jest/scripts/mocks/tasks.json';
 
 describe('test getDisplayName function', () => {
     test('getDisplayName function should return is not string', () => {
@@ -46,19 +48,19 @@ describe('test getFavorite function', () => {
     });
 
     test('getFavorite function should result 2 tasks favorite in json', () => {
-        expect(getFavorite(tasksMook).length).toBe(2);
+        expect(getFavorite(fromJS(tasksMook)).length).toBe(2);
     });
 
     test('getFavorite function should result 2 tasks favorite in json', () => {
-        expect(getFavorite(tasksMook).length).not.toBe(0);
+        expect(getFavorite(fromJS(tasksMook)).length).not.toBe(0);
     });
 
     test('getFavorite function should return undefined', () => {
-        expect(getFavorite(tasksMook)).not.toBeUndefined();
+        expect(getFavorite(fromJS(tasksMook))).not.toBeUndefined();
     });
 
     test('getFavorite function should return object in array ', () => {
-        expect(typeof getFavorite(tasksMook)[0]).toBe('object');
+        expect(typeof getFavorite(fromJS(tasksMook))[0]).toBe('object');
     });
 });
 
@@ -68,41 +70,19 @@ describe('test getNotCompleted function', () => {
     });
 
     test('sortTask function should result length not real with favorite', () => {
-        expect(getNotCompleted(tasksMook).length).toBe(4);
+        expect(getNotCompleted(fromJS(tasksMook)).length).toBe(4);
     });
 
     test('sortTask function should result length 0 real length > 0', () => {
-        expect(getNotCompleted(tasksMook).length).not.toBe(0);
+        expect(getNotCompleted(fromJS(tasksMook)).length).not.toBe(0);
     });
 
     test('sortTask function should return undefined', () => {
-        expect(getNotCompleted(tasksMook)).not.toBeUndefined();
+        expect(getNotCompleted(fromJS(tasksMook))).not.toBeUndefined();
     });
 
     test('searchTask function should return object in array ', () => {
-        expect(typeof getNotCompleted(tasksMook)[0]).toBe('object');
-    });
-});
-
-describe('test getAllTask function', () => {
-    test('getAllTask function should return is not array', () => {
-        expect(Array.isArray(getAllTask([], []))).toBe(true);
-    });
-
-    test('getAllTask function should result length not real', () => {
-        expect(getAllTask(tasksMook, getNotCompleted(tasksMook)).length).toBe(2);
-    });
-
-    test('getAllTask function should result length 0 real length > 0', () => {
-        expect(getAllTask(tasksMook, getNotCompleted(tasksMook)).length).not.toBe(0);
-    });
-
-    test('getAllTask function should return undefined', () => {
-        expect(getAllTask(tasksMook, getNotCompleted(tasksMook))).not.toBeUndefined();
-    });
-
-    test('getAllTask function should return object in array ', () => {
-        expect(typeof getAllTask(tasksMook, getNotCompleted(tasksMook))[0]).toBe('object');
+        expect(typeof getNotCompleted(fromJS(tasksMook))[0]).toBe('object');
     });
 });
 
@@ -112,19 +92,19 @@ describe('test sortTask function', () => {
     });
 
     test('sortTask function should result length !== operand length', () => {
-        expect(sortTask(tasksMook).length).toBe(tasksMook.length);
+        expect(sortTask(fromJS(tasksMook)).length).toBe(tasksMook.length);
     });
 
     test('sortTask function should result length 0 tasks length > 0', () => {
-        expect(sortTask(tasksMook).length).not.toBe(0);
+        expect(sortTask(fromJS(tasksMook)).length).not.toBe(0);
     });
 
     test('sortTask function should return undefined', () => {
-        expect(sortTask(tasksMook)).not.toBeUndefined();
+        expect(sortTask(fromJS(tasksMook))).not.toBeUndefined();
     });
 
     test('sortTask function should return object in array ', () => {
-        expect(typeof sortTask(tasksMook)[0]).toBe('object');
+        expect(typeof sortTask(fromJS(tasksMook))[0]).toBe('object');
     });
 });
 
@@ -134,19 +114,19 @@ describe('test searchTask function', () => {
     });
 
     test('searchTask function should result 1 tasks in json', () => {
-        expect(searchTask(tasksMook, 'nfg').length).toBe(1);
+        expect(searchTask(fromJS(tasksMook), 'nfg').length).toBe(1);
     });
 
     test('searchTask function should result tasks length 0', () => {
-        expect(searchTask(tasksMook, 'nfg').length).not.toBe(0);
+        expect(searchTask(fromJS(tasksMook), 'nfg').length).not.toBe(0);
     });
 
     test('searchTask function should return undefined', () => {
-        expect(searchTask(tasksMook, 'nfg')).not.toBeUndefined();
+        expect(searchTask(fromJS(tasksMook), 'nfg')).not.toBeUndefined();
     });
 
     test('searchTask function should return object in array ', () => {
-        expect(typeof searchTask(tasksMook, 'nfg')[0]).toBe('object');
+        expect(typeof searchTask(fromJS(tasksMook), 'nfg')[0]).toBe('object');
     });
 });
 
@@ -156,10 +136,16 @@ describe('test getCheckedCompletedAll function', () => {
     });
 
     test('getCheckedCompletedAll function should return is not array', () => {
-        expect(getCheckedCompletedAll(tasksMook)).toBe(false);
+        expect(getCheckedCompletedAll(searchTask(fromJS(tasksMook), ''))).toBe(false);
     });
 
     test('getCheckedCompletedAll function should return undefined', () => {
-        expect(getCheckedCompletedAll(tasksMook)).not.toBeUndefined();
+        expect(getCheckedCompletedAll(searchTask(fromJS(tasksMook), ''))).not.toBeUndefined();
+    });
+});
+
+describe('test getAllTask function', () => {
+    test('getAllTask function should return is not array', () => {
+        expect(Array.isArray(getAllTask([], []))).toBe(true);
     });
 });
